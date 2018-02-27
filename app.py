@@ -24,11 +24,19 @@ app = Flask(__name__)
 def incidents():
 
     incident_list = []
-
+    src_list1 = []
+    src_list2 = []
     # Display items in MongoDB collection
     incidents = db.incidents.find()
 
     for incident in incidents:
+
+        source = incident["SOURCES"]
+        src_list = source.split(";")
+        source = src_list[0]
+        src_list2 = source.split(" ")
+        source = src_list2[0]
+        print(source)
 
         incident_dict = {
             "place": incident["LOCATION"],
@@ -37,6 +45,9 @@ def incidents():
             "name": incident["CASE"],
             "victims" : incident["TOTALVICTIMS"],
             "location": [incident["LATITUDE"], incident["LONGITUDE"]],
+            "mental_issues" : incident["PRIORSIGNSOFMENTALILLNESS"],
+            "assault_rifle" : incident["ASSAULT"],
+            "weapons" : incident["WEAPONSOBTAINEDLEGALLY"],
             "source" : incident["SOURCES"]
         }
         incident_list.append(incident_dict)

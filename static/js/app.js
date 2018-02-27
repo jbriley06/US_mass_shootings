@@ -8,26 +8,145 @@ function buildMap() {
     
     console.log(response[0]);
 
+    var incidentMarkers = [];
+    var mental_illness = [];
+    var assault_weapon = [];
+    var weapons_legal = [];
+    var src
+
+    //Parse through json object to extract pop-up data
+    for (var i = 0; i < response.length; i++) {
+
+      incidentMarkers.push(
+      L.marker(response[i].location)
+      .bindPopup("<h2>" + response[i].name + "</h2> <hr> <h3>" + response[i].place + "</h3> \
+                  <h3>" + response[i].year + "</h3> <h3>"+ response[i].victims + " victims" + "</h3> <A href=" + response[i].victims +"</A>")
+      )
+    
+      if (response[i].mental_issues == "Yes"){
+        
+        mental_illness.push(
+          L.marker(response[i].location)
+          .bindPopup("<h2>" + response[i].name + "</h2> <hr> <h3>" + response[i].place + "</h3> \
+                      <h3>" + response[i].year + "</h3> <h3>"+ response[i].victims + " victims" + "</h3>")
+        )}
+
+        if (response[i].assault_rifle == "Yes"){
+        
+          assault_weapon.push(
+            L.marker(response[i].location)
+            .bindPopup("<h2>" + response[i].name + "</h2> <hr> <h3>" + response[i].place + "</h3> \
+                        <h3>" + response[i].year + "</h3> <h3>"+ response[i].victims + " victims" + "</h3>")
+        )}
+
+        if (response[i].weapons == "Yes"){
+        
+          weapons_legal.push(
+            L.marker(response[i].location)
+            .bindPopup("<h2>" + response[i].name + "</h2> <hr> <h3>" + response[i].place + "</h3> \
+                        <h3>" + response[i].year + "</h3> <h3>"+ response[i].victims + " victims" + "</h3>")
+        )}
+    }
+
+    //create layer with all incidents
+    var incident = L.layerGroup(incidentMarkers);
+
+    //create layer with only incidents with prior mental illness
+    var mentalillness = L.layerGroup(mental_illness);
+
+    //create layer with only incidents with assault weapons
+    var assault = L.layerGroup(assault_weapon);
+
+    //create layer with only incidents with legally obtained weapons
+    var legal_weapons = L.layerGroup(weapons_legal);
+
     // Create a map object
     var myMap = L.map("map", {
       center: [37.09, -95.71],
       zoom: 5
     });
 
-    // Add a tile layer
+      // Add a tile layer
     L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/outdoors-v10/tiles/256/{z}/{x}/{y}?" +
       "access_token=pk.eyJ1IjoibWFsYWNoaXJhIiwiYSI6ImNqZGhrMXV6ejBjM2wyd28yY3VtajJvcTYifQ.hwWYJ006t5ZinWceLhnf9Q"
     ).addTo(myMap);
 
-    for (var i = 0; i < response.length; i++) {
-      var incident = response[i];
-      L.marker(incident.location)
-        .bindPopup("<h2>" + incident.name + "</h2> <hr> <h3>" + incident.place + "</h3> \
-                    <h3>" + incident.year + "</h3> <h3>"+ incident.victims + " victims" + "</h3>")
-        .addTo(myMap);
-    }
+    // Define variables for our base layers
+    var streetmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/outdoors-v10/tiles/256/{z}/{x}/{y}?" +
+    "access_token=pk.eyJ1IjoibWFsYWNoaXJhIiwiYSI6ImNqZGhrMXV6ejBjM2wyd28yY3VtajJvcTYifQ.hwWYJ006t5ZinWceLhnf9Q"
+    );
+
+    // Create a baseMaps object
+    var baseMaps = {
+      "Street Map": streetmap
+    };
+
+    // Create a baseMaps object
+    var baseMaps = {
+    };
+
+    // Create an overlay object
+    var overlayMaps = {
+      "All incidents": incident,
+      "Prior mental illness":mentalillness,
+      "Assault weapon used" : assault,
+      "Weapons obtained legally" : legal_weapons
+    };
+
+    // Pass our map layers into our layer control
+    // Add the layer control to the map
+    var control = L.control.layers(baseMaps, overlayMaps, {
+      collapsed: false
+    }).addTo(myMap);
+
+    // myMap.on('layerremove', function(event) {
+    //     if(event.layer == incident) {
+    //       console.log("removed incident layer")
+    //   }
+    // })
+
+    myMap.on("overlayadd overlayremove", function (event) {
+
+      var layer = event.layer,
+            layerCategory;
+
+      if (event.type === "overlayadd" && event.layer === mentalillness){
+          myMap.removeLayer(incident);
+          myMap.removeLayer(assault);
+          myMap.removeLayer(legal_weapons);
+          control._update();
+        }
+      else if (event.type === "overlayadd" && event.layer === assault){
+          myMap.removeLayer(incident);
+          myMap.removeLayer(mentalillness);
+          myMap.removeLayer(legal_weapons);
+          control._update();
+        }
+      else if (event.type === "overlayadd" && event.layer === legal_weapons){
+          myMap.removeLayer(incident);
+          myMap.removeLayer(mentalillness);
+          myMap.removeLayer(assault);
+          control._update();
+        }
+      else if (event.type === "overlayadd" && event.layer === incident){
+          myMap.removeLayer(legal_weapons);
+          myMap.removeLayer(mentalillness);
+          myMap.removeLayer(assault);
+          control._update();
+        }
+    })
+
+
 
   })
+
+  // var $btn = d3.select(".leaflet-control-layers-selector");
+  // $btn.on("change", handleClick);
+
+  // function handleClick(){
+  //   console.log("button clicked")
+  // }
+
 
     // "place": incident["LOCATION"],
     // "state": incident["STATE"],
