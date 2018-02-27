@@ -31,12 +31,12 @@ def incidents():
 
     for incident in incidents:
 
+        #clean-up the links in the "source" data field
         source = incident["SOURCES"]
         src_list = source.split(";")
         source = src_list[0]
         src_list2 = source.split(" ")
         source = src_list2[0]
-        print(source)
 
         incident_dict = {
             "place": incident["LOCATION"],
@@ -48,7 +48,7 @@ def incidents():
             "mental_issues" : incident["PRIORSIGNSOFMENTALILLNESS"],
             "assault_rifle" : incident["ASSAULT"],
             "weapons" : incident["WEAPONSOBTAINEDLEGALLY"],
-            "source" : incident["SOURCES"]
+            "source" : source
         }
         incident_list.append(incident_dict)
 
