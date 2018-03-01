@@ -10,6 +10,8 @@ client = pymongo.MongoClient(conn)
 
 db = client.us_mass_shootings
 collection = db.incidents
+shootings = db.shootings
+# collection1 = db.gun_laws_by_states
 
 app = Flask(__name__)
 @app.route("/")
@@ -18,7 +20,7 @@ def plots():
 
 @app.route("/incidents_per_year")
 def index():
-    events = list(collection.find())
+    events = list(shootings.find())
 
     year_list = []
     for event in events:
@@ -34,7 +36,7 @@ def index():
 
 @app.route("/victims_per_year")
 def victims():
-    events = list(collection.find())
+    events = list(shootings.find())
     number_of_victims = []
     number_of_victims = []
     for event in events:
@@ -45,28 +47,41 @@ def victims():
             victims_per_year["Injured"] = event["Injured"]        
             number_of_victims.append(victims_per_year)
     return jsonify(number_of_victims)
-            
-            
-#     # print(number_of_victims)
-#     number_of_victims_sorted_by_year = sorted(number_of_victims, key=lambda k: k['Year'])
-    
-#     return jsonify(number_of_victims_sorted_by_year)
 
-# @app.route("/victims_by_city")
-# def victimsbycity():
-#     events = list(collection.find())
-#     number_of_victims = []
-#     for event in events:
-#         victims_per_year = {}
-#         if event["Year"] != 0:
-#             victims_per_year["Year"] = event["Year"]
-#             victims_per_year["Total_Victims"] = event["Total victims"]
-#             victims_per_year["City"] = event["Location"]        
-#             number_of_victims.append(victims_per_year)
 
-#     number_of_victims_sorted_by_year = sorted(number_of_victims, key=lambda k: k['Year'])
-    
-#     return jsonify(number_of_victims_sorted_by_year)
+@app.route("/incidents")
+def incidents():
+
+    incident_list = []
+    src_list1 = []
+    src_list2 = []
+    # Display items in MongoDB collection
+    incidents = db.incidents.find()
+
+    for incident in incidents:
+
+        #clean-up the links in the "source" data field
+        source = incident["SOURCES"]
+        src_list = source.split(";")
+        source = src_list[0]
+        src_list2 = source.split(" ")
+        source = src_list2[0]
+
+        incident_dict = {
+            "place": incident["LOCATION"],
+            "state": incident["STATE"],
+            "year": incident["YEAR"],            
+            "name": incident["CASE"],
+            "victims" : incident["TOTALVICTIMS"],
+            "location": [incident["LATITUDE"], incident["LONGITUDE"]],
+            "mental_issues" : incident["PRIORSIGNSOFMENTALILLNESS"],
+            "assault_rifle" : incident["ASSAULT"],
+            "weapons" : incident["WEAPONSOBTAINEDLEGALLY"],
+            "source" : source
+        }
+        incident_list.append(incident_dict)
+
+    return jsonify(incident_list)
 
 if __name__ == "__main__":
     app.run(debug=True)
