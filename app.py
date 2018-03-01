@@ -1,10 +1,13 @@
-# import necessary libraries
+# Dependencies
 from flask import (
     Flask,
     json,
     render_template,
+    Markup,
     jsonify)
 
+from bs4 import BeautifulSoup
+import requests
 import pymongo
 
 # Initialize PyMongo to work with MongoDBs
@@ -59,6 +62,25 @@ def incidents():
 @app.route("/")
 def home():
     return render_template("index.html")
+
+@app.route("/states")
+def states():
+    return render_template("states.html")
+
+@app.route("/getlaws/<state>")
+def getlaws(state):
+
+    # URL of page to be scraped
+    base_url = "https://en.wikipedia.org/wiki/Gun_laws_in_"
+    url = base_url + state
+
+    # Retrieve page with the requests module
+    response = requests.get(url)
+    # Create BeautifulSoup object; parse with 'lxml'
+    soup = BeautifulSoup(response.text, 'lxml')
+    results = soup.find_all('table', class_='wikitable')
+    value = Markup(results[0])
+    return value
 
 if __name__ == "__main__":
     app.run(debug=True)
