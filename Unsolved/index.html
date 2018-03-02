@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>US Mass Shootings</title>
+
+      <!-- Leaflet CSS & JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+  <style>
+    .navbar-nav  li a {
+      font-size: 18 px;
+    }
+    body {
+      font: 20px Montserrat, sans-serif;
+      line-height: 1.8;
+      background-color: white;
+  }
+  p {font-size: 16px;}
+  .margin {margin-bottom: 45px;}
+ 
+  
+  .container-fluid {
+      padding-top: 10px;
+      padding-bottom: 10px;
+  }
+  .navbar {
+      padding-top: 0px;
+      padding-bottom: 0px;
+      border: 0;
+      border-radius: 0;
+      margin-bottom: 0;
+      font-size: 12px;
+      letter-spacing: 5px;
+      font-size: 24 px;
+  }
+  .navbar-nav  li a:hover {
+      color: #1abc9c !important;
+      font-size: 18px;
+
+  }
+     @media screen and (max-width: 768px) {
+    .col-sm-4 {
+      text-align: center;
+      margin: 25px 0;
+    }
+    .btn-lg {
+        width: 100%;
+        margin-bottom: 35px;
+    }
+  }
+  @media screen and (max-width: 480px) {
+    .logo {
+        font-size: 150px;
+    }
+  }
+    </style>
+
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>                        
+        </button>
+        <a class="navbar-brand" href="newindex.html"></a>
+      </div>
+      <div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+          <ul class="nav navbar-nav navbar-right">
+                  <!-- <li class="dropdown">
+                      <a class="dropdown-toggle" data-toggle="dropdown" href="#">Plots
+                          <span class="caret"></span>
+                      </a>
+                      <ul class="dropdown-menu">
+                          <li>
+                              <a href="#section41">Leaflet</a>
+                          </li>
+                          <li>
+                              <a href="#section42">Plotly</a>
+                          </li>
+                          <li>
+                                  <a href="#section43">Stats</a>
+                              </li>
+                      </ul> -->
+                  </li>
+            <li><a href="#section1">Leaflet</a></li>
+            <li><a href="#section2">Plots</a></li>
+            <li><a href="#section2">Choropleth Map</a></li>
+            <li><a href="#section2">State Gun Laws</a></li>
+            
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+</nav>   
+      
+<div class="container">
+    <div class="jumbotron" style="margin-top:25px">
+        <h1>Visualizing US Mass Shootings </h1>
+
+        <p>For our project, we used datasets for Mass Shootings from 1982-2018 as well as State Gun Laws. 
+        </p>
+
+        <!-- <ul>
+            <strong> Data Sources used :</strong>
+            <! <li>https://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php</li>
+            <li>https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json</li> -->
+        <!-- </ul> -->
+
+        <!-- <ul>
+            <strong>Technologies used :</strong>
+            <li>leaflet.js</li>
+            <li>Javascript/Flask/HTML/Bootsrap/CSS </li>
+            <li>GeoJSON</li>
+        <! </ul> --> 
+      <!-- -->
+
+        
+
+        <!-- <div style="margin-top:5px"> -->
+       
+    </div>
+    </div>
+
+  <!-- <div class="jumbotron text-center">
+    <div class="row">
+        <h1>US Mass Shootings 1982-now</h1>
+      <div id="map"></div>
+
+    </div>
+     -->
+
+  </div><br>
+
+  <h3>Leaflet Map</h3>
+  <div id="map">
+    <div class="row">
+      <div class="col-md-12">
+          <img src="Leaflet.png" height="50%" width="50%"=alt="">
+
+
+      </div>
+    </div>
+
+  </div>
+
+
+  <div class="row">
+
+      <div class="col-md-6">
+          <h3>Choropleth Map</h3>
+          <div id="mymapHeat"></div>
+
+      </div>
+
+      <div class="col-md-6">
+          <h3>Plotly Plots</h3>
+          <div id="mymapCluster"></div>
+      </div>
+
+  </div>
+
+</div>
+
+
+
+
+ <!-- Placeholders for visuals  -->
+ <div id="map"></div>
+ <div id="linePlot"></div>
+ <div id= "lineplot1"></div>       
+ <div id="choroplethmap"></div>
+
+
+<footer class="footer">
+  <div class="container">
+    <p class="text-muted">UT Data Analytics Program</p>
+  </div>
+</footer>      
+      <!-- First Container -->
+<!-- <div class="container-fluid bg-1 text-center">
+    <h3 class="margin">Who Am I?</h3>
+    <img src="bird.jpg" class="img-responsive img-circle margin" style="display:inline" alt="Bird" width="350" height="350">
+    <h3>I'm an adventurer</h3>
+  </div>
+  
+  Second Container
+  <div class="container-fluid bg-2 text-center"> -->
+    <!-- <h3 class="margin">What Am I?</h3>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
+    <!-- <a href="#" class="btn btn-default btn-lg"> -->
+      <!-- <span class="glyphicon glyphicon-search"></span> Search
+    </a>
+  <!-- </div> --> 
+  
+  <!-- Third Container (Grid) -->
+  <!-- <div class="container-fluid bg-3 text-center">    
+    <h3 class="margin">Where To Find Me?</h3><br>
+    <div class="row">
+      <div class="col-sm-4">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        <img src="birds1.jpg" class="img-responsive margin" style="width:100%" alt="Image">
+      </div>
+      <div class="col-sm-4"> 
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        <img src="birds2.jpg" class="img-responsive margin" style="width:100%" alt="Image">
+      </div>
+      <div class="col-sm-4"> 
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        <img src="birds3.jpg" class="img-responsive margin" style="width:100%" alt="Image">
+      </div>
+    </div>
+  </div>
+   -->
+  <!-- Footer -->
+ 
+      <!-- <div id="myCarousel" class="carousel slide" data-ride="carousel"> -->
+        <!-- Indicators -->
+        <!-- <ol class="carousel-indicators">
+          <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+          <li data-target="#myCarousel" data-slide-to="1"></li>
+          <li data-target="#myCarousel" data-slide-to="2"></li>
+        </ol>
+     -->
+        <!-- Wrapper for slides -->
+        <!-- <div class="carousel-inner">
+    
+          <div class="item active">
+            <img src="Leaflet.png" alt="Los Angeles" style="width:100%;">
+            <div class="carousel-caption">
+              <h3>First </h3>
+              <p>Number of Mass shootings across country</p>
+            </div>
+          </div>
+    
+          <div class="item">
+            <img src="bubbleplt.png" alt="Chicago" style="width:100%;">
+            <div class="carousel-caption">
+              <h3>Bubble Plot</h3>
+              <p>Number of shootings</p>
+            </div>
+          </div>
+        
+          <div class="item">
+            <img src="barchart.png" alt="New York" style="width:100%;">
+            <div class="carousel-caption">
+              <h3>Fatalities</h3>
+              <p>Growth year over year</p>
+            </div>
+          </div>
+      
+        </div>
+    
+        Left and right controls
+        <!-- <!-- <a class="left carousel-control" href="#myCarousel" data-slide="prev"> -->
+          <!-- <span class="glyphicon glyphicon-chevron-left"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="#myCarousel" data-slide="next">
+          <span class="glyphicon glyphicon-chevron-right"></span>
+          <span class="sr-only">Next</span>
+        </a>
+      </div>
+    </div>    -->
+
+
+  
+    
+    <!-- Our JS -->
+  <!-- <script type="text/javascript" src="app.js"></script> -->
+
+  <script src="{{url_for('static', filename='js/app.js')}}"></script>
+</body>
+</html>
+<!-- 
+"{{url_for('static', filename='app.js')}}" -->
+
+<!-- <style>.bg-1 { 
+    background-color: #1abc9c; /* Green */
+    color: #ffffff;
+  }
+  .bg-2 { 
+    background-color: #474e5d; /* Dark Blue */
+    color: #ffffff;
+  }
+  .bg-3 { 
+    background-color: #ffffff; /* White */
+    color: #555555;
+  }
+  .bg-4 { 
+    background-color: #2f2f2f; /* Black Gray */
+    color: #fff;
+    </style> -->
