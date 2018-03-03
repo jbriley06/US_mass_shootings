@@ -20,37 +20,49 @@ function buildMap() {
       console.log(response[i].source )
       incidentMarkers.push(
       L.marker(response[i].location)
-      .bindPopup("<h2>" + response[i].name + "</h2> <hr> <h3>" + response[i].place + "</h3> \
-                  <h3>" + response[i].year + "</h3> <h3>"+ response[i].victims + " victims" + "</h3>\
-                  <a href=" + response[i].source +" target='_blank'>source</a>")
+      .bindPopup("<h5>" + response[i].name + "</h5>\
+                  <ul class=list-group>\
+                  <li class=list-group-item>" + response[i].place + "</li>\
+                  <li class=list-group-item>" + response[i].date+ "</li>\
+                  <li class=list-group-item>" + response[i].victims+ " victims </li>\
+                  <li class=list-group-item> <a href=" + response[i].source +" target='_blank'>source</a></li>")
       )
 
       if (response[i].mental_issues == "Yes"){
         
         mental_illness.push(
           L.marker(response[i].location)
-          .bindPopup("<h2>" + response[i].name + "</h2> <hr> <h3>" + response[i].place + "</h3> \
-                      <h3>" + response[i].year + "</h3> <h3>"+ response[i].victims + " victims" + "</h3>\
-                      <a href=" + response[i].source +" target='_blank'>source</a>")
-        )}
+          .bindPopup("<h5>" + response[i].name + "</h5>\
+          <ul class=list-group>\
+          <li class=list-group-item>" + response[i].place + "</li>\
+          <li class=list-group-item>" + response[i].date+ "</li>\
+          <li class=list-group-item>" + response[i].victims+ " victims </li>\
+          <li class=list-group-item> <a href=" + response[i].source +" target='_blank'>source</a></li>")
+          )}
 
         if (response[i].assault_rifle == "Yes"){
         
           assault_weapon.push(
             L.marker(response[i].location)
-            .bindPopup("<h2>" + response[i].name + "</h2> <hr> <h3>" + response[i].place + "</h3> \
-                        <h3>" + response[i].year + "</h3> <h3>"+ response[i].victims + " victims" + "</h3>\
-                        <a href=" + response[i].source +" target='_blank'>source</a>")
-        )}
+            .bindPopup("<h5>" + response[i].name + "</h5>\
+            <ul class=list-group>\
+            <li class=list-group-item>" + response[i].place + "</li>\
+            <li class=list-group-item>" + response[i].date+ "</li>\
+            <li class=list-group-item>" + response[i].victims+ " victims </li>\
+            <li class=list-group-item> <a href=" + response[i].source +" target='_blank'>source</a></li>")
+            )}
 
         if (response[i].weapons == "Yes"){
         
           weapons_legal.push(
             L.marker(response[i].location)
-            .bindPopup("<h2>" + response[i].name + "</h2> <hr> <h3>" + response[i].place + "</h3> \
-                        <h3>" + response[i].year + "</h3> <h3>"+ response[i].victims + " victims" + "</h3>\
-                        <a href=" + response[i].source +" target='_blank'>source</a>")
-        )}
+            .bindPopup("<h5>" + response[i].name + "</h5>\
+            <ul class=list-group>\
+            <li class=list-group-item>" + response[i].place + "</li>\
+            <li class=list-group-item>" + response[i].date+ "</li>\
+            <li class=list-group-item>" + response[i].victims+ " victims </li>\
+            <li class=list-group-item> <a href=" + response[i].source +" target='_blank'>source</a></li>")
+          )}
     }
 
     //create layer with all incidents
