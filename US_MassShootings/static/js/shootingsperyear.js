@@ -95,6 +95,35 @@ Plotly.newPlot('lineplot1', data ,layout);
 });
 
 
+var url = ("/venue");
+Plotly.d3.json(url, function(error,result){
+// console.log(response)
+
+var venue = [];
+var numberOfShootings = [];  
+
+for ( each in result){
+    console.log( each + "-" + result[each])
+    venue.push(each)
+    numberOfShootings.push(result[each])
+}
+
+var data = [{
+    values: numberOfShootings,
+    labels: venue,
+    type: 'pie'
+    
+  }];
+  
+  var layout = {
+    title:"Targeted Venues"
+  };
+  
+  Plotly.newPlot('pie', data, layout);
+
+});
+
+
 
 
 

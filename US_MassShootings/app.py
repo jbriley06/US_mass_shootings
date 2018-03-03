@@ -1,12 +1,16 @@
 # Dependencies
 import pymongo
 import datetime
+import os
 from collections import defaultdict
 from flask import Flask, render_template, jsonify, Markup
 from operator import itemgetter
 from bs4 import BeautifulSoup
 import requests
 
+MONGODB_URI = os.environ.get('MONGODB_URI')
+if not MONGODB_URI:
+   MONGODB_URI = "mongodb://localhost:27017/us_mass_shootings"
 
 conn = 'mongodb://localhost:27017'
 client = pymongo.MongoClient(conn)
@@ -14,7 +18,6 @@ client = pymongo.MongoClient(conn)
 db = client.us_mass_shootings
 collection = db.incidents
 shootings = db.shootings
-# collection1 = db.gun_laws_by_states
 
 app = Flask(__name__)
 @app.route("/")
@@ -29,10 +32,6 @@ def shootingsperyear():
 @app.route("/choropleth")
 def gunlaws():
     return render_template("choropleth.html")
-
-@app.route("/piechart")
-def shootingvenues():
-    return render_template("piechart.html")
 
 @app.route("/incidents_per_year")
 def index():
@@ -103,6 +102,10 @@ def incidents():
 @app.route("/states")
 def states():
     return render_template("states.html")
+
+@app.route("/about")
+def about():
+    return render_template("about.html")
 
 
 @app.route("/getlaws/<state>")
